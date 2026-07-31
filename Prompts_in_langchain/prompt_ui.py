@@ -1,21 +1,18 @@
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+from langchain_huggingface import HuggingFaceEndpoint
 from dotenv import load_dotenv
 import streamlit as st
 
 load_dotenv()
 
-# LLM
 llm = HuggingFaceEndpoint(
-    repo_id="mistralai/Mistral-7B-Instruct-v0.3",
+    repo_id="poolside/Laguna-S-2.1",
     task="text-generation"
 )
 
-model = ChatHuggingFace(llm=llm)
-
 st.header("Research Tool")
+paper_input  = st.selectbox
 
-user_input = st.text_input("Enter your prompt")
 
 if st.button("Summarize"):
-    result = model.invoke(user_input)
-    st.write(result.content)
+    result = llm.invoke(user_input)
+    st.write(result)
