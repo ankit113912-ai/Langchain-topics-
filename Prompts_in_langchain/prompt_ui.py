@@ -1,21 +1,69 @@
-from langchain_huggingface import HuggingFaceEndpoint
+from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 import streamlit as st
+import os
 
 load_dotenv()
 
-llm = HuggingFaceEndpoint(
-    repo_id="poolside/Laguna-S-2.1",
-    task="text-generation"
+client = InferenceClient(
+    api_key=os.getenv("HUGGINGFACEHUB_API_TOKEN")
 )
 
-st.header("Research Tool")
-paper_input  = st.selectbox ("selest Research Paper Name ",["selest...","Attention is All you Need" , "BERT: Pro-traning of deep Bidirectional Transformers", "GPT-3: Language Models are Few-Shot Learners", "Diffusion Models Beat GANS on Image Synthesis"])
-style_input  = st.selectbox ( " Select Explanation Style",[ "Beinner- Friendly", "Technical", "Code-orinted","Mathematical"])
-lenght_input = st.selestbox ( "Select Explanation Lenght ", ["Short (1-2 Paragraphs)", "Medium (3-5 paragraph)","Long (detailed explanation)"])
+st.title("Research Tool")
 
+paper_input = st.selectbox(
+    "Select Research Paper",
+    [
+        "Attention Is All You Need",
+        "BERT: Pre-training of Deep Bidirectional Transformers",
+        "GPT-3: Language Models are Few-Shot Learners",
+        "Diffusion Models Beat GANs on Image Synthesis"
+    ]
+)
 
+style_input = st.selectbox(
+    "Select Explanation Style",
+    [
+        "Beginner-Friendly",
+        "Technical",
+        "Code-Oriented",
+        "Mathematical"
+    ]
+)
+
+length_input = st.selectbox(
+    "Select Explanation Length",
+    [
+        "Short (1-2 Paragraphs)",
+        "Medium (3-5 Paragraphs)",
+        "Long (Detailed Explanation)"
+    ]
+)
+
+user_input = st.text_area("Enter your question")
 
 if st.button("Summarize"):
-    result = llm.invoke(user_input)
-    st.write(result)
+
+    prompt = f"""
+    Research Paper: {paper_input}
+
+    Explanation Style: {style_input}
+
+    Explanation Length: {length_input}
+
+    User Question:
+    {user_input}
+    """
+
+    response = client.chat_completion(
+        model="deepseek-ai/DeepSeek-V4-Pro:featherless-ai",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        max_tokens=700
+    )
+
+    st.write(response.choices[0].message.content)
