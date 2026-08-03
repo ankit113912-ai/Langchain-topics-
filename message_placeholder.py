@@ -25,6 +25,6 @@ print (chat_history)
 
 chat_template.invoke({'chat_history': chat_history, 'query': HumanMessage(content='where is my refund?')})
 
-print (Prompt)
+print (prompt)
 
 
