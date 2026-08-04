@@ -23,7 +23,8 @@ structured_model = model.with_structured_output(Review)
 result = model.invoke( """ ...................................................""")
 
 
-print (result['sentiment'])
+print (result['name'])
+
 
 
 
