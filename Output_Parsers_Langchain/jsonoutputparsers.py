@@ -21,15 +21,12 @@ template = PromptTemplate (
 )
 
 
-prompt =template.format()
+chain = template | model | parser
 
-result = model.invoke(prompt)
+result = chain.invoke ()
+
 print (result)
 
-final_result = parser.parse(result.content)
-print(final_result)
-
-print (type(final_result))
 
 
 
