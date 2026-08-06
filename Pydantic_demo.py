@@ -31,4 +31,10 @@ new_Students =  {'age ' : '32' ,'email': 'abc@gmail.com', 'cgpa':5}
 
 Student = Student(**new_Student)
 
-print(Student)
+Student_dict = dict(Student)
+
+print (student_dict['age'])
+
+student_json = Student.model_dump_json()
+
+
