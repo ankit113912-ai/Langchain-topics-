@@ -31,16 +31,12 @@ template = PromptTemplate(
    
 )
 
-prompt = template.invoke({'place':'indian'})
+chain = template | model | parser 
 
-print (prompt)
-
-
-result = model.invoke(prompt)
-
-final_result = parser.parse(result.content)
+final_result = chain.invoke({'place': 'sri lankan'})
 
 print(final_result)
+
 
 
 
